@@ -11,4 +11,5 @@ cc_library(
         "storage.h",
     ],
     visibility = ["//visibility:public"],
+    copts = ["-std=c++17"],
 )

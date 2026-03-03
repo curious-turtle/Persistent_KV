@@ -19,34 +19,20 @@ void LogManager::log_put(const std::string &key, const std::string &value)
 {
     if (log_stream_.is_open())
     {
-        log_stream_ << "PUT " << key << " " << value << std::endl;
+        log_stream_ << key << " " << value << std::endl;
     }
 }
 
-void LogManager::log_remove(const std::string &key)
-{
-    if (log_stream_.is_open())
-    {
-        log_stream_ << "REMOVE " << key << std::endl;
-    }
-}
-
-void LogManager::replay(Storage &storage)
+void LogManager::load(Storage &storage)
 {
     std::ifstream replay_stream(log_file_);
-    std::string operation, key, value;
+    std::string key, value;
 
-    while (replay_stream >> operation)
+    // Each log line is expected to be: <key> <value>
+    // Read both tokens in the loop to avoid shifting tokens (was reading an extra
+    // "operation" token per iteration which desynced subsequent reads).
+    while (replay_stream >> key >> value)
     {
-        if (operation == "PUT")
-        {
-            replay_stream >> key >> value;
-            storage.put(key, value);
-        }
-        else if (operation == "REMOVE")
-        {
-            replay_stream >> key;
-            storage.remove(key);
-        }
+        storage.put(key, value);
     }
 }

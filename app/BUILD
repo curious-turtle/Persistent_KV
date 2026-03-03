@@ -4,4 +4,5 @@ cc_binary(
     name = "app",
     srcs = ["main.cpp"],
     deps = ["//kvstore"],
+    copts = ["-std=c++17"],
 )

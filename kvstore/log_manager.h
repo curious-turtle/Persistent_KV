@@ -11,8 +11,7 @@ public:
     ~LogManager();
 
     void log_put(const std::string &key, const std::string &value);
-    void log_remove(const std::string &key);
-    void replay(class Storage &storage);
+    void load(class Storage &storage);
 
 private:
     std::string log_file_;
