@@ -1,0 +1,52 @@
+#include "log_manager.h"
+#include "storage.h"
+#include <iostream>
+
+LogManager::LogManager(const std::string &log_file) : log_file_(log_file)
+{
+    log_stream_.open(log_file_, std::ios::app);
+}
+
+LogManager::~LogManager()
+{
+    if (log_stream_.is_open())
+    {
+        log_stream_.close();
+    }
+}
+
+void LogManager::log_put(const std::string &key, const std::string &value)
+{
+    if (log_stream_.is_open())
+    {
+        log_stream_ << "PUT " << key << " " << value << std::endl;
+    }
+}
+
+void LogManager::log_remove(const std::string &key)
+{
+    if (log_stream_.is_open())
+    {
+        log_stream_ << "REMOVE " << key << std::endl;
+    }
+}
+
+void LogManager::replay(Storage &storage)
+{
+    std::ifstream replay_stream(log_file_);
+    std::string operation, key, value;
+
+    while (replay_stream >> operation)
+    {
+        if (operation == "PUT")
+        {
+            replay_stream >> key >> value;
+            storage.put(key, value);
+        }
+        else if (operation == "REMOVE")
+        {
+            replay_stream >> key;
+            storage.remove(key);
+        }
+    }
+}
