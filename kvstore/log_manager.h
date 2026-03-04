@@ -3,6 +3,7 @@
 
 #include <string>
 #include <fstream>
+#include <chrono>
 
 class Storage;
 
@@ -13,12 +14,17 @@ public:
     ~LogManager();
 
     void log_put(const std::string &key, const std::string &value, bool log_to_storage = true);
-    void load(Storage &storage);
+    void restore();
+    Storage &get_storage() { return storage_; }
 
 private:
+    int fd;
     std::string log_file_;
-    std::ofstream log_stream_;
     Storage &storage_;
+    int batch_count = 0;
+    int batch_size = 200;
+    std::chrono::steady_clock::time_point last_flush_;
+    int flush_interval_ms = 5;
 };
 
 #endif // KVSTORE_LOG_MANAGER_H

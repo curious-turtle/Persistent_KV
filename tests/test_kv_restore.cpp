@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     LogManager log_manager(logfile.string(), storage);
 
     auto start = std::chrono::steady_clock::now();
-    log_manager.load(storage);
+    log_manager.restore();
     auto end = std::chrono::steady_clock::now();
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 

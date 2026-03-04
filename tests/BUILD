@@ -18,3 +18,10 @@ cc_test(
     srcs = ["test_read_latency.cpp", ":test_data_generation_files"],
     deps = ["//kvstore"],
 )
+
+
+cc_test(
+    name = "write_latency_test",
+    srcs = ["test_writing_latency.cpp", ":test_data_generation_files"],
+    deps = ["//kvstore"],
+)

@@ -28,12 +28,12 @@ int main(int argc, char **argv)
 
     LogManager log_manager(logfile.string(), storage);
 
-    log_manager.load(storage);
+    log_manager.restore();
 
     int sz = storage.size();
     if (sz <= 0)
     {
-        std::cerr << "Storage empty after load" << std::endl;
+        std::cerr << "Storage empty after restore" << std::endl;
         return 2;
     }
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
     return 0;
 }
-// get storage load from log_manager
+// get storage restored from log_manager
 // Check it's size
 // and do random get operations for 10% of values and keep track how much time it took
 // take average of that and print that average
