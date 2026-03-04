@@ -3,16 +3,17 @@
 #include <chrono>
 #include <string>
 #include <cassert>
+#include <fstream>
 
 #include "kvstore/storage.h"
 #include "kvstore/log_manager.h"
-
-namespace fs = std::filesystem;
+#include "tests/test_data_generation.h"
 
 int main(int argc, char **argv)
 {
-    // Hardcoded runfiles path
-    fs::path logfile = fs::path(argv[0]).parent_path() / "data.log";
+    fs::path logfile = "";
+    Storage storage;
+    generate_test_data(logfile, storage, false);
 
     std::ifstream f(logfile);
     if (!f.is_open())
@@ -21,8 +22,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    Storage storage;
-    LogManager log_manager(logfile.string());
+    LogManager log_manager(logfile.string(), storage);
 
     auto start = std::chrono::steady_clock::now();
     log_manager.load(storage);

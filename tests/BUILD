@@ -1,33 +1,20 @@
-load("@rules_cc//cc:defs.bzl", "cc_test","cc_binary")
+load("@rules_cc//cc:defs.bzl", "cc_test")
 
-cc_binary(
-    name = "generate_test_data",
-    srcs = ["test_data_generation.cpp"],
-    deps = ["//kvstore"],
-)
-
-# This runs your generator and produces data.log
-genrule(
-    name = "generated_logfile",
-    srcs = [":generate_test_data"],
-    outs = ["data.log"],
-    cmd = "$(location :generate_test_data) $@",
+filegroup(
+    name = "test_data_generation_files",
+    srcs = ["test_data_generation.cpp", "test_data_generation.h"],
+    visibility = ["//visibility:public"],
 )
 
 cc_test(
     name = "restore_test",
-    srcs = ["test_kv_restore.cpp"],
+    srcs = ["test_kv_restore.cpp", ":test_data_generation_files"],
     deps = ["//kvstore"],
-    data = [
-        ":generated_logfile",   # <-- data.log will be placed in runfiles
-    ],
+
 )
 
 cc_test(
     name = "read_latency_test",
-    srcs = ["test_read_latency.cpp"],
+    srcs = ["test_read_latency.cpp", ":test_data_generation_files"],
     deps = ["//kvstore"],
-    data = [
-        ":generated_logfile",
-    ],
 )

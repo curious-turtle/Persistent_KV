@@ -9,14 +9,15 @@
 
 #include "kvstore/storage.h"
 #include "kvstore/log_manager.h"
+#include "tests/test_data_generation.h"
 
 // TO DO: Use google benchmark for this test instead of rolling our own timing and reporting.
 
-namespace fs = std::filesystem;
-
 int main(int argc, char **argv)
 {
-    fs::path logfile = fs::path(argv[0]).parent_path() / "data.log";
+    fs::path logfile = "";
+    Storage storage;
+    generate_test_data(logfile, storage, false);
 
     std::ifstream f(logfile);
     if (!f.is_open())
@@ -25,8 +26,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    Storage storage;
-    LogManager log_manager(logfile.string());
+    LogManager log_manager(logfile.string(), storage);
 
     log_manager.load(storage);
 
