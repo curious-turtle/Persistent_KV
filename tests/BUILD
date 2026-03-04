@@ -22,3 +22,12 @@ cc_test(
         ":generated_logfile",   # <-- data.log will be placed in runfiles
     ],
 )
+
+cc_test(
+    name = "read_latency_test",
+    srcs = ["test_read_latency.cpp"],
+    deps = ["//kvstore"],
+    data = [
+        ":generated_logfile",
+    ],
+)

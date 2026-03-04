@@ -19,7 +19,7 @@ void generate_test_data(const fs::path &logfile)
 
     LogManager log_manager(abspath.string());
 
-    for (int i = 0; i < 100000; i++)
+    for (int i = 0; i < 10000000; i++)
     {
         std::string key = std::to_string(i);
         std::string value = std::to_string(i);

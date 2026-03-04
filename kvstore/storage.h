@@ -14,6 +14,7 @@ public:
     std::string get(const std::string &key);
     bool remove(const std::string &key);
     bool exists(const std::string &key);
+    int size() const;
 
 private:
     std::unordered_map<std::string, std::string> data_;

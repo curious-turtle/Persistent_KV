@@ -28,3 +28,8 @@ bool Storage::exists(const std::string &key)
 {
     return data_.find(key) != data_.end();
 }
+
+int Storage::size() const
+{
+    return data_.size();
+}

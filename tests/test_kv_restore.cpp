@@ -31,7 +31,8 @@ int main(int argc, char **argv)
 
     std::cout << "Restore took " << ms << " ms" << std::endl;
 
-    for (int i = 0; i < 100000; i++)
+    int sz = storage.size();
+    for (int i = 0; i < sz; i++)
     {
         std::string key = std::to_string(i);
         std::string expected = std::to_string(i);
